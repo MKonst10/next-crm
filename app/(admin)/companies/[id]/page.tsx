@@ -10,7 +10,6 @@ export default async function Page({ params }: PageProps) {
   return (
     <>
       <Header>Companies ({id})</Header>
-      <p>{new Date().toTimeString()}</p>
     </>
   );
 }
