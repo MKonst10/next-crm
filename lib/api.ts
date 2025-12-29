@@ -54,13 +54,18 @@ export interface Promotion {
   avatar?: string;
 }
 
+export interface GetPromotionsParams {
+  companyId?: string;
+}
+
 const PROJECT_TOKEN = process.env.NEXT_PUBLIC_PROJECT_TOKEN;
 
 const buildUrl = (...paths: string[]) =>
   `https://${PROJECT_TOKEN}.mockapi.io/api/v1/${paths.join('/')}`;
 
-const stringifyQueryParams = (params: Record<string, string>) =>
-  new URLSearchParams(params).toString();
+const stringifyQueryParams = (params: Record<string, string>) => {
+  return new URLSearchParams(params).toString();
+};
 
 const sendRequest = async <T>(url: string, init?: RequestInit) => {
   const res = await fetch(url, init);
@@ -96,11 +101,9 @@ export const getCompany = (id: string, init?: RequestInit) => {
 };
 
 export const getPromotions = async (
-  params: Record<string, string> = {},
+  params: GetPromotionsParams = {},
   init?: RequestInit,
 ) => {
-  return sendRequest<Promotion[]>(
-    `${buildUrl('promotions')}?${stringifyQueryParams(params)}`,
-    init,
-  );
+  const query = params.companyId ? `?companyId=${params.companyId}` : '';
+  return sendRequest<Promotion[]>(`${buildUrl('promotions')}${query}`, init);
 };
