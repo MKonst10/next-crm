@@ -105,5 +105,31 @@ export const getPromotions = async (
   init?: RequestInit,
 ) => {
   const query = params.companyId ? `?companyId=${params.companyId}` : '';
-  return sendRequest<Promotion[]>(`${buildUrl('promotions')}${query}`, init);
+  try {
+    const res = await fetch(`${buildUrl('promotions')}${query}`, init);
+    if (!res.ok) {
+      return [];
+    }
+    return (await res.json()) as Promotion[];
+  } catch (err) {
+    return [];
+  }
+};
+
+export const createCompany = async (
+  data: Omit<Company, 'id' | 'hasPromotions'>,
+) => {
+  return sendRequest<Company>(buildUrl('companies'), {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'content-type': 'application/json' },
+  });
+};
+
+export const createPromotion = async (data: Omit<Promotion, 'id'>) => {
+  return sendRequest<Promotion>(buildUrl('promotions'), {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'content-type': 'application/json' },
+  });
 };

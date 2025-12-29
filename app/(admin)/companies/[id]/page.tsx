@@ -6,7 +6,7 @@ import getQueryClient from '@/lib/utils/getQueryClient';
 import CompanyInfo from '@/app/components/company-info';
 import CompanyPromotions from '@/app/components/company-promotions';
 
-export interface PageProps {
+interface PageProps {
   params: Promise<{ id: string }>;
 }
 
@@ -27,10 +27,8 @@ export default async function Page({ params }: PageProps) {
     staleTime: 10 * 1000,
   });
 
-  const company = queryClient.getQueryData<Company>(['companies', id]);
-  if (!company) {
-    notFound();
-  }
+  const company = queryClient.getQueryData(['companies', id]) as Company;
+  if (!company) notFound();
 
   const dehydratedState = dehydrate(queryClient);
 

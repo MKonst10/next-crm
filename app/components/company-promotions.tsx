@@ -17,11 +17,14 @@ export default function CompanyPromotions({
     queryFn: () => getPromotions({ companyId }),
     enabled: !!companyId,
     staleTime: 10 * 1000,
+    retry: false,
   });
+
+  if (!data || data.length === 0) return <div>No promotions yet.</div>;
 
   return (
     <div className="grid grid-cols-12 gap-5">
-      {data?.map((promotion) => (
+      {data.map((promotion) => (
         <div key={promotion.id} className="col-span-4">
           <Promotion promotion={promotion} />
         </div>

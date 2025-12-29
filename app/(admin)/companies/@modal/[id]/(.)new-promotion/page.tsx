@@ -5,27 +5,19 @@ import Button from '@/app/components/button';
 import PromotionFormModal from '@/app/components/promotion-form-modal';
 import { useParams } from 'next/navigation';
 
-interface AddPromotionButtonProps {
-  companyId?: string;
-}
-
-export default function AddPromotionButton({
-  companyId,
-}: AddPromotionButtonProps) {
+export default function AddPromotionButton() {
   const params = useParams();
-  const id = companyId || (Array.isArray(params.id) ? params.id[0] : params.id);
-
+  const companyId = Array.isArray(params.id) ? params.id[0] : params.id;
   const [showModal, setShowModal] = useState(false);
 
-  if (!id) return null;
+  if (!companyId) return null;
 
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Add Promotion</Button>
-
       {showModal && (
         <PromotionFormModal
-          companyId={id}
+          companyId={companyId}
           show={true}
           onClose={() => setShowModal(false)}
         />
